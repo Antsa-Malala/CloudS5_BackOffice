@@ -141,6 +141,7 @@ const DetailsAnnonce = (props) => {
 
     const confirmerAnnonce = async () => {
         let url = process.env.REACT_APP_API_URL + "/annonces/valider/" + id;
+        console.log(url);
         let response = await fetch(url);
         let data = await response.json();
         setItems(data.data);

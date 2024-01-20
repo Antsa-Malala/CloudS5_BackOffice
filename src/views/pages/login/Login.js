@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{ useState } from 'react'
 import { Link } from 'react-router-dom'
 import {
   CButton,
@@ -16,7 +16,41 @@ import {
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
 
+
 const Login = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const connection = async () => {
+    try {
+      console.log(email+"huhu");
+      console.log(password+"haha");
+      let url = process.env.REACT_APP_API_URL + "/auth/signin";
+
+      const userData = {
+        email: email,
+        password: password,
+      };
+
+      let response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem('token', data.token);
+      } else {
+        console.error('Erreur lors de la requête :', response.status);
+      }
+    } catch (error) {
+      console.error('Erreur inattendue :', error);
+    }
+  };
+
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
       <CContainer>
@@ -32,7 +66,11 @@ const Login = () => {
                       <CInputGroupText>
                         <CIcon icon={cilUser} />
                       </CInputGroupText>
-                      <CFormInput placeholder="Email" autoComplete="email" />
+                      <CFormInput 
+                      placeholder="Email" 
+                      autoComplete="email" 
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)} />
                     </CInputGroup>
                     <CInputGroup className="mb-4">
                       <CInputGroupText>
@@ -42,14 +80,15 @@ const Login = () => {
                         type="password"
                         placeholder="Mot de passe"
                         autoComplete="current-password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                       />
                     </CInputGroup>
                     <CRow>
                       <CCol xs={6}>
-                        <CButton color="primary" className="px-4">
-                          <Link to="/dashboard" style={{ textDecoration: 'none', color: 'inherit' }}>
+                        <CButton color="primary" className="px-4" type="button"
+                        onClick={connection}>
                             Se connecter
-                          </Link>
                         </CButton>
                       </CCol>
                       <CCol xs={6} className="text-right">
