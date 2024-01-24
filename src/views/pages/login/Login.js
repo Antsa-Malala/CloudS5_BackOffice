@@ -14,35 +14,69 @@ import {
   CRow,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
+import {
+  CToast,
+  CToastBody,
+} from '@coreui/react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
 
-
-const Login = () => {
+  const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const connection = async () => {
     try {
-      console.log(email+"huhu");
-      console.log(password+"haha");
-      let url = process.env.REACT_APP_API_URL + "/auth/signin";
-
+      const url = process.env.REACT_APP_API_URL + "/auth/signin";
+  
       const userData = {
         email: email,
         password: password,
       };
-
-      let response = await fetch(url, {
+  
+      const response = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(userData),
       });
-
+  
       if (response.ok) {
         const data = await response.json();
         localStorage.setItem('token', data.token);
+        connected(data.token);
+      } else {
+        console.error('Erreur lors de la requête :', response.status);
+        showToast('Identifiant ou mot de passe incorrect. Vérifiez et réessayez.');
+      }
+    } catch (error) {
+      console.error('Erreur inattendue :', error);
+    }
+  };
+  
+
+  const connected = async (userToken) => {
+    try {
+      const url = process.env.REACT_APP_API_URL + "/utilisateurs/connecte";
+
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${userToken}`,
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data.data);
+        
+        if (data.data.role === 1) {
+          window.location.href = "#/dashboard";
+        } else {
+          console.error('Cette application est réservée pour les administrateurs', 403);
+          showToast('Cette application est uniquement pour les administrateurs.');
+        }
       } else {
         console.error('Erreur lors de la requête :', response.status);
       }
@@ -50,6 +84,25 @@ const Login = () => {
       console.error('Erreur inattendue :', error);
     }
   };
+  const showToast = (message) => {
+    const toaster = document.getElementById('toaster');
+  
+    const toast = document.createElement('div');
+    toast.textContent = message;
+    toast.style.color = 'red';
+    toast.style.padding = '5px';
+    toast.style.margin = '10px';
+  
+    toaster.appendChild(toast);
+  
+    setTimeout(() => {
+      toaster.removeChild(toast);
+    }, 3000);
+  };
+  
+  
+  
+
 
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
@@ -57,6 +110,7 @@ const Login = () => {
         <CRow className="justify-content-center">
           <CCol md={8}>
             <CCardGroup>
+                    <div id="toaster" className="toast-container"></div>
               <CCard className="p-4">
                 <CCardBody>
                   <CForm>

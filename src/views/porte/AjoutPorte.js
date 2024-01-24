@@ -3,7 +3,7 @@ import Ajout from "../../components/crud/Ajout";
 
 const AjoutPorte = () => {
     return (
-        <Ajout endpoint="/portes" title="Nom de la porte" nom="nomPorte" />
+        <Ajout endpoint="/portes" title="Nombre de porte" nom="valeur" />
     );
 };
 

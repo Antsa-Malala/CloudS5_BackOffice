@@ -1,55 +1,18 @@
 import { React, useEffect, useState } from 'react'
 import {
-  CAvatar,
   CButton,
-  CButtonGroup,
-  CCard,
-  CCardBody,
-  CCardFooter,
-  CCardHeader,
-  CCol,
-  CProgress,
-  CRow,
   CTable,
-  CTableBody,
-  CTableDataCell,
-  CTableHead,
-  CTableHeaderCell,
-  CTableRow,
 } from '@coreui/react'
-import { CChartLine } from '@coreui/react-chartjs'
-import { getStyle, hexToRgba } from '@coreui/utils'
-import CIcon from '@coreui/icons-react'
-import {
-  cibCcAmex,
-  cibCcApplePay,
-  cibCcMastercard,
-  cibCcPaypal,
-  cibCcStripe,
-  cibCcVisa,
-  cibGoogle,
-  cibFacebook,
-  cibLinkedin,
-  cifBr,
-  cifEs,
-  cifFr,
-  cifIn,
-  cifPl,
-  cifUs,
-  cibTwitter,
-  cilCloudDownload,
-  cilPeople,
-  cilUser,
-  cilUserFemale,
-} from '@coreui/icons'
+import { CSpinner } from '@coreui/react';
 
 import { Link } from 'react-router-dom'
 
 const Liste = (props) => {
   let[ nom, setNom ] = useState("");
   let[ id, setId ] = useState("");
+  const [loading, setLoading] = useState(true);
   const[ items, setItems ] = useState([]);
-  const[ columns, setColumns ] = useState([]);
+  const token = localStorage.getItem('token');
 
   const fetchItems = ( endpoint ) => {
     let url = process.env.REACT_APP_API_URL + endpoint;
@@ -67,12 +30,14 @@ const Liste = (props) => {
     };
     // console.log(url);
     xhttp.open( "GET" , url, true );
+    xhttp.setRequestHeader('Authorization', `Bearer ${token}`);
     xhttp.send(null);
   };
 
   const formatDatas = ( response, endpoint ) => {
    response.map( item => formatData(item, endpoint) );
    setItems(response);
+   setLoading(false);
   };
 
   const formatData = ( item, endpoint ) => {
@@ -93,10 +58,15 @@ const Liste = (props) => {
       if( this.readyState === 4 ){
         if( this.status === 200 ){
             fetchItems( endpoint );
-          }
+        }else{
+            const errorResponse = JSON.parse(this.responseText);
+            console.error(`Erreur lors de la suppression : ${errorResponse.erreur}`);
+        }
+        
       }
     };
     xhttp.open( "DELETE" , url , true );
+    xhttp.setRequestHeader('Authorization', `Bearer ${token}`);
     xhttp.send(null);
   };
 
@@ -112,9 +82,16 @@ const Liste = (props) => {
   }, [] );
   
   return(
+    <div>
+      {loading ? (
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100px' }}>
+          <CSpinner color="info" />
+        </div>
+      ) : (
     <CTable columns={props.columns} items = {items} />
+    )}
+    </div>
   );
-
 };
 
 export default Liste;

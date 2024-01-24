@@ -1,55 +1,18 @@
 import { React, useEffect, useState } from 'react'
 import {
-    CAvatar,
     CButton,
-    CButtonGroup,
-    CCard,
-    CCardBody,
-    CCardFooter,
-    CCardHeader,
-    CCol,
-    CProgress,
-    CRow,
     CTable,
-    CTableBody,
-    CTableDataCell,
-    CTableHead,
-    CTableHeaderCell,
-    CTableRow,
 } from '@coreui/react'
-import { CChartLine } from '@coreui/react-chartjs'
-import { getStyle, hexToRgba } from '@coreui/utils'
-import CIcon from '@coreui/icons-react'
-import {
-    cibCcAmex,
-    cibCcApplePay,
-    cibCcMastercard,
-    cibCcPaypal,
-    cibCcStripe,
-    cibCcVisa,
-    cibGoogle,
-    cibFacebook,
-    cibLinkedin,
-    cifBr,
-    cifEs,
-    cifFr,
-    cifIn,
-    cifPl,
-    cifUs,
-    cibTwitter,
-    cilCloudDownload,
-    cilPeople,
-    cilUser,
-    cilUserFemale,
-} from '@coreui/icons'
 
 import { Link } from 'react-router-dom'
+import { CSpinner } from '@coreui/react';
 
 const ListeA = (props) => {
     let[ nom, setNom ] = useState("");
     let[ id, setId ] = useState("");
     const[ items, setItems ] = useState([]);
-    const[ columns, setColumns ] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const token = localStorage.getItem('token');
 
     const fetchItems = ( endpoint ) => {
         let url = process.env.REACT_APP_API_URL + endpoint;
@@ -67,23 +30,27 @@ const ListeA = (props) => {
         };
         // console.log(url);
         xhttp.open( "GET" , url, true );
+        xhttp.setRequestHeader('Authorization', `Bearer ${token}`);
         xhttp.send(null);
     };
 
     const formatDatas = ( response, endpoint ) => {
         response.map( item => formatData(item, endpoint) );
         setItems(response);
+        setLoading(false);
     };
 
     const formatData = ( item, endpoint ) => {
         console.log(item.etat);
-        if( item.etat === 1 ){
-            item['etat'] = "Publié";
-        }else {
-            item['etat'] = "Non publié";
+        if( item.etat === 0 ){
+            item['etat'] = "Non Validée";
+        }else if(item.etat === 20){
+            item['etat'] = "Validée";
+        }else if(item.etat === 30){
+            item['etat'] = "Vendue";
         }
         item['details'] = (
-            <Link to={ `details/${item[id]}` } > Details </Link>
+            <Link to={ `details/${item[id]}` } > Détails </Link>
         );
         item['delete'] = (
             <CButton type="button" onClick={ () => deleteProducts( item[id], endpoint ) }> Supprimer </CButton>
@@ -118,7 +85,15 @@ const ListeA = (props) => {
     }, [] );
 
     return(
+    <div>
+    {loading ? (
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100px' }}>
+            <CSpinner color="info" />
+        </div>
+    ) : (
         <CTable columns={props.columns} items = {items} />
+        )}
+    </div>
     );
 
 };

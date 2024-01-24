@@ -38,7 +38,7 @@ const ListeAnnonce = ( props ) => {
     ];
 
     return (
-        <ListeA columns = {column} endpoint="/annonces/valide" id_nom="idAnnonce" nom="idAnnonce" />
+        <ListeA columns = {column} endpoint="/annonces" id_nom="idAnnonce" nom="idAnnonce" />
     );
 };
 

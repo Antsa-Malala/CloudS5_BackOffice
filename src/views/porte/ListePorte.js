@@ -10,7 +10,7 @@ const ListePorte = (props) => {
         _props: { scope: "col" },
         },
         {
-        key: "valeur",
+        key: "nomPorte",
         label: "NOMBRE DE PORTE",
         _props: { scope: "col" },
         },

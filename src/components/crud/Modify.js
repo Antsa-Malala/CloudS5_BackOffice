@@ -1,50 +1,10 @@
 import { React, useEffect, useState, useRef } from 'react'
 import {
-  CAvatar,
   CButton,
-  CButtonGroup,
-  CCard,
-  CCardBody,
-  CCardFooter,
-  CCardHeader,
-  CCol,
   CForm,
   CFormLabel,
   CFormInput,
-  CProgress,
-  CRow,
-  CTable,
-  CTableBody,
-  CTableDataCell,
-  CTableHead,
-  CTableHeaderCell,
-  CTableRow,
 } from '@coreui/react'
-import { CChartLine } from '@coreui/react-chartjs'
-import { getStyle, hexToRgba } from '@coreui/utils'
-import CIcon from '@coreui/icons-react'
-import {
-  cibCcAmex,
-  cibCcApplePay,
-  cibCcMastercard,
-  cibCcPaypal,
-  cibCcStripe,
-  cibCcVisa,
-  cibGoogle,
-  cibFacebook,
-  cibLinkedin,
-  cifBr,
-  cifEs,
-  cifFr,
-  cifIn,
-  cifPl,
-  cifUs,
-  cibTwitter,
-  cilCloudDownload,
-  cilPeople,
-  cilUser,
-  cilUserFemale,
-} from '@coreui/icons'
 
 
 const Modify = ( props ) => {
@@ -56,6 +16,7 @@ const Modify = ( props ) => {
   const handleChange = ( event ) => {
     setValue( event.target.value );
   };
+  const token = localStorage.getItem('token');
 
   const handleUpdate = ( endpoint ) => {
 
@@ -73,15 +34,15 @@ const Modify = ( props ) => {
           let save = message.save;
           let data = response.data;
           console.log(data);
-          
+          window.location.href="#"+endpoint;
         }
       }
     };
 
     xhttp.open("PUT" , url, true );
     xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.setRequestHeader('Authorization', `Bearer ${token}`);
     xhttp.send( JSON.stringify(data) );
-  
   };
 
   const getItems = ( id_value, endpoint, nomColonne ) => {
@@ -93,13 +54,13 @@ const Modify = ( props ) => {
         if( this.status === 200 ){
           let response = JSON.parse( this.responseText );
           let data = response.data;
-          //let items = data.items;
           setValue( data[nomColonne] );
         }
       }
     };
 
     xhttp.open("GET" , url, true);
+    xhttp.setRequestHeader('Authorization', `Bearer ${token}`);
     xhttp.send();
   };
 

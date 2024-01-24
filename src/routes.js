@@ -110,7 +110,6 @@ const Toasts = React.lazy(() => import('./views/notifications/toasts/Toasts'))
 const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 
 const routes = [
-  { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
 
   { path: '/categories', name: 'Categorie page', element: ListeCategorie },
@@ -145,9 +144,9 @@ const routes = [
   { path: '/energies/ajouter', name: 'Ajout energies', element: AjoutEnergie },
   { path: '/energies/modifier/:id/:nom/:id_nom', exact: true, name: 'Modifier Energie', element: ModifierEnergie },
 
-  { path: '/modele', name: 'Liste Modele', element: ListeModele },
-  { path: '/modele/ajouter', name: 'Ajout Modele', element: AjoutModele },
-  { path: '/modele/modifier/:id', exact: true, name: 'Modifier Modele', element: ModifierModele },
+  { path: '/modeles', name: 'Liste Modele', element: ListeModele },
+  { path: '/modeles/ajouter', name: 'Ajout Modele', element: AjoutModele },
+  { path: '/modeles/modifier/:id', exact: true, name: 'Modifier Modele', element: ModifierModele },
 
   { path: '/utilisateurs', name: 'Liste Utilisateurs', element: ListeUtilisateur },
   { path: '/utilisateurs/ajouter', name: 'Ajout Utilisateurs', element: AjoutUtilisateur },

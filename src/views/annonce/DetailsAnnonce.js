@@ -12,12 +12,16 @@ import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
-import ImageList from '@mui/material/ImageList';
-import ImageListItem from '@mui/material/ImageListItem';
+import {
+    CImage,
+    CCarousel,
+    CCarouselItem,
+} from '@coreui/react'
 
 const DetailsAnnonce = (props) => {
     let { id } = useParams();
     const [items, setItems] = useState([]);
+    let [idVoiture, setIdVoiture] = useState("");
     let [nomCategorie, setNomCategorie] = useState("");
     let [nomMarque, setNomMarque] = useState("");
     let [nomModele, setNomModele] = useState("");
@@ -34,7 +38,9 @@ const DetailsAnnonce = (props) => {
     let [adresseUtilisateur, setAdresseUtilisateur] = useState("");
     let [telephoneUtilisateur, setTelephoneUtilisateur] = useState("");
     let [description, setDescription] = useState("");
-
+    let [etat, setEtat] = useState("");
+    let [images, setImages] = useState([]);
+    const token=localStorage.getItem("token");
 
     function TabPanel(props) {
         const { children, value, index, ...other } = props;
@@ -82,7 +88,14 @@ const DetailsAnnonce = (props) => {
 
     const fetchAnnonce = async () => {
         let url = process.env.REACT_APP_API_URL + "/annonces/" + id;
-        let response = await fetch(url);
+        const token = localStorage.getItem('token');
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
         let data = await response.json();
         setItems(data.data);
         let datas = data.data;
@@ -91,6 +104,8 @@ const DetailsAnnonce = (props) => {
 
         nomCategorie = voiture.categorie.nomCategorie;
         console.log(nomCategorie);
+
+        idVoiture=voiture.idVoiture;
 
         nomMarque = voiture.marque.nomMarque;
         console.log(nomMarque);
@@ -121,6 +136,8 @@ const DetailsAnnonce = (props) => {
         emailUtilisateur = datas.utilisateur.mail;
         adresseUtilisateur = datas.utilisateur.adresse;
         telephoneUtilisateur = datas.utilisateur.contact;
+        etat=datas.etat;
+        setIdVoiture(idVoiture);
         setNomCategorie(nomCategorie);
         setNomMarque(nomMarque);
         setNomModele(nomModele);
@@ -137,27 +154,88 @@ const DetailsAnnonce = (props) => {
         setAdresseUtilisateur(adresseUtilisateur);
         setTelephoneUtilisateur(telephoneUtilisateur);
         setDescription(description);
+        setEtat(etat);
+        getImage();
    };
 
     const confirmerAnnonce = async () => {
+        try {
         let url = process.env.REACT_APP_API_URL + "/annonces/valider/" + id;
-        console.log(url);
-        let response = await fetch(url);
-        let data = await response.json();
-        setItems(data.data);
-        console.log(data.data);
-        console.log(id);
-    }
+    
+        let response = await fetch(url, {
+            method: 'PUT',
+            headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+            },
+        });
+    
+        if (response.ok) {
+            let data = await response.json();
+            setItems(data.data);
+            console.log(data.data);
+            console.log(id);
+            window.location.href="#/annonces";
+        } else {
+            console.error('Erreur lors de la requête :', response.status);
+        }
+        } catch (error) {
+        console.error('Erreur inattendue :', error);
+        }
+    };
+  
 
+    const getImage = async () => {
+        try {
+        let url = process.env.REACT_APP_API_URL + "/photo/" + idVoiture;
+        console.log("url"+url)
+        let response = await fetch(url, {
+            method: 'GET',
+            headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+            },
+        });
+    
+        if (response.ok) {
+            let data = await response.json();
+            setImages(data.data);
+            console.log(images)
+        } else {
+            console.error('Erreur lors de la requête :', response.status);
+        }
+        } catch (error) {
+        console.error('Erreur inattendue :', error);
+        }
+    };
+
+    
     const RefuserAnnonce = async () => {
+        try {
         let url = process.env.REACT_APP_API_URL + "/annonces/refuser/" + id;
-        let response = await fetch(url);
-        let data = await response.json();
-        setItems(data.data);
-        console.log(data.data);
-        console.log(id);
+    
+        let response = await fetch(url, {
+            method: 'PUT',
+            headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+            },
+        });
+    
+        if (response.ok) {
+            let data = await response.json();
+            setItems(data.data);
+            console.log(data.data);
+            console.log(id);
+            window.location.href="#/annonces";
+        } else {
+            console.error('Erreur lors de la requête :', response.status);
+        }
+        } catch (error) {
+        console.error('Erreur inattendue :', error);
+        }
+    };
 
-    }
 
     function srcset(image, size, rows = 1, cols = 1) {
         return {
@@ -180,45 +258,31 @@ const DetailsAnnonce = (props) => {
 
     return (
         <div>
-            <div>
-                <ImageList
-                    sx={{width: 600, height: 450}}
-                    variant="quilted"
-                    cols={2}
-                    rowHeight={400}
-                >
-                    {itemData.map((item, index) => (
-                        <ImageListItem key={item.img} cols={item.cols || 1} rows={item.rows || 1} style={{ cursor: 'grab' }}>
-                            <img
-                                {...srcset(item.img, 400, item.rows, item.cols)}
-                                alt={item.title}
-                                loading="lazy"
-                                style={{
-                                    objectFit: 'cover',
-                                    width: enlargedIndex === index ? '100%' : 'auto',
-                                    height: enlargedIndex === index ? '100%' : 'auto',
-                                }}
-                                draggable="false" // Empêcher le glisser-déposer natif du navigateur
-                            />
-                        </ImageListItem>
-
+            <div style={{ position: 'absolute', top: '150px', left: '40%', transform: 'translateX(-50%)', width: '600px' }}>
+                <CCarousel controls>
+                    {images.map((image, index) => (
+                    <CCarouselItem key={index}>
+                        <CImage
+                        className="d-block w-100"
+                        src={`data:${image.contentType};base64,${image.photo}`}
+                        alt={`slide ${index + 1}`}
+                        style={{ maxWidth: '100%', height: 'auto' }}
+                        />
+                    </CCarouselItem>
                     ))}
-                </ImageList>
-                <div style={{display: 'flex', justifyContent: 'center', gap: '30px'}}>
-                    <CButton
-                        type="button"
-                        onClick={() => confirmerAnnonce({ id })}
-                    >
+                </CCarousel>
+                {etat === 0 && (
+                    <div style={{ display: 'flex', justifyContent: 'center', gap: '30px', marginTop: '10px' }}>
+                    <CButton type="button" onClick={() => confirmerAnnonce({ id })}>
                         Confirmer
                     </CButton>
-                    <CButton
-                        type="button"
-                        onClick={() => RefuserAnnonce({ id })}
-                    >
+                    <CButton type="button" onClick={() => RefuserAnnonce({ id })}>
                         Refuser
                     </CButton>
-                </div>
+                    </div>
+                )}
             </div>
+
             <div style={{position: 'absolute', top: 130, right: 70}}>
                 <h4 style={{ textAlign:"center" }}>Details Annonce</h4>
                 <Box sx={{bgcolor: 'background.paper', width: 500}}>
@@ -274,20 +338,5 @@ const DetailsAnnonce = (props) => {
         </div>
     );
 };
-
-const itemData = [
-    {
-        img: 'https://images.unsplash.com/photo-1549388604-817d15aa0110',
-        title: 'Bed',
-    },
-    {
-        img: 'https://images.unsplash.com/photo-1563298723-dcfebaa392e3',
-        title: 'Kitchen',
-    },
-    {
-        img: 'https://images.unsplash.com/photo-1523413651479-597eb2da0ad6',
-        title: 'Sink',
-    },
-];
 
 export default DetailsAnnonce;

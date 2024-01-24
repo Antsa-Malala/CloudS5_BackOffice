@@ -10,7 +10,7 @@ const ListePlace = (props) => {
         _props: { scope: "col" },
         },
         {
-        key: "valeur",
+        key: "nomPlace",
         label: "NOMBRE DE PLACE",
         _props: { scope: "col" },
         },
