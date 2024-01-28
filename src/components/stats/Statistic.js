@@ -162,6 +162,7 @@ import CIcon from '@coreui/icons-react'
 							xAxis={[{ scaleType: 'band', dataKey: 'libelle' }]}
 							series={[{ dataKey: 'nombre', label: 'Commissions', valueFormatter }]}
 							layout="vertical"
+							colors={['#8F908D']}
 							{...chartSetting}
 							/>
 						)}
@@ -174,7 +175,7 @@ import CIcon from '@coreui/icons-react'
 				<CCol>
 					<CWidgetStatsA
 						
-						color="primary"
+						style={{ backgroundColor: '#475465',color:"white" }}
 						value={visitors !== null ? visitors : 'Chargement...'}
 						title="Utilisateurs"
 						chart={
@@ -188,7 +189,7 @@ import CIcon from '@coreui/icons-react'
 											
 											backgroundColor: 'transparent',
 											borderColor: 'rgba(255,255,255,.55)',
-											pointBackgroundColor: getStyle('--cui-primary'),
+											pointBackgroundColor: "#475465",
 											data: [65, 59, 84, 84, 51, 55, 40],
 										},
 									],
@@ -243,7 +244,7 @@ import CIcon from '@coreui/icons-react'
 			<CRow>
 				<CCol>
 					<CWidgetStatsA
-						color='info'
+						style={{ backgroundColor: '#B0C0D4',color:"white",border:'#B0C0D4' }}
 						value={publie !== null ? publie : 'Chargement...'}
 						title="Annonces publiées"
 						chart={
@@ -257,7 +258,7 @@ import CIcon from '@coreui/icons-react'
 											label: 'My First dataset',
 											backgroundColor: 'transparent',
 											borderColor: 'rgba(255,255,255,.55)',
-											pointBackgroundColor: getStyle('--cui-info'),
+											pointBackgroundColor: '#B0C0D4',
 											data: [59, 70, 50, 84, 51, 60, 40],
 										},
 									],
@@ -312,7 +313,7 @@ import CIcon from '@coreui/icons-react'
 			<CRow>
 				<CCol>
 					<CWidgetStatsA
-						color='danger'
+						style={{ backgroundColor: '#E7414D',color:"white",border:'#8F908D' }}
 						value={vendue !== null ? vendue : 'Chargement...'}
 						title="Voitures vendues"
 						chart={
@@ -326,7 +327,7 @@ import CIcon from '@coreui/icons-react'
 											label: 'My First dataset',
 											backgroundColor: 'transparent',
 											borderColor: 'rgba(255,255,255,.55)',
-											pointBackgroundColor: getStyle('--cui-danger'),
+											pointBackgroundColor: '#E7414D',
 											data: [90, 40, 80, 40, 85, 50, 90],
 										},
 									],
@@ -394,7 +395,7 @@ import CIcon from '@coreui/icons-react'
 						icon={<CIcon width={24} icon={cilCarAlt} size="xl" />}
 						title={annonce.libelle}
 						value={annonce.nombre}
-						color="info"
+						color="warning"
 					/>
 				</CCol>
 				))}
@@ -418,7 +419,7 @@ import CIcon from '@coreui/icons-react'
 						icon={<CIcon width={24} icon={cilCarAlt} size="xl" />}
 						title={voiture.libelle}
 						value={voiture.nombre}
-						color="warning"
+						color="secondary"
 					/>
 				</CCol>
 				))}

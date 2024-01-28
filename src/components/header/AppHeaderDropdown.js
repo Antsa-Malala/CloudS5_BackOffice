@@ -31,7 +31,7 @@ const AppHeaderDropdown = () => {
       <CDropdownMenu className="pt-0" placement="bottom-end">
         <CDropdownItem onClick={handleLogout}>
           <CIcon icon={cilAccountLogout} className="me-2" />
-          Log Out
+          Se déconnecter
         </CDropdownItem>
       </CDropdownMenu>
     </CDropdown>

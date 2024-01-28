@@ -109,13 +109,13 @@ const handleMarqueChange = (event) => {
   },[]);
 
   return (
-    <CForm>
-      <div className="my-3 col-6">
+    <CForm style={{ boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.08)",marginTop:"30px",padding:"20px",marginLeft:"30%",marginRight:"auto",borderRadius:"10px",width:"35%",backgroundColor:"white"}}>
+      <div>
         <CFormLabel>Nom du modèle</CFormLabel>
-        <CFormInput type="text" value={modeles} id="nom" onChange={(event) => handleModeleChange(event)}/>
+        <CFormInput type="text" value={modeles} id="nom" onChange={(event) => handleModeleChange(event)} placeholder="Insérez une nouvelle valeure...."/>
       </div>
 
-	  <div className="my-3 col-6">
+	  <div>
 		<CFormLabel>Catégorie</CFormLabel>
 		<CFormSelect id="categorie" onClick={(event) => handleCategorieChange(event)}>
 			{categories &&
@@ -127,7 +127,7 @@ const handleMarqueChange = (event) => {
 		</CFormSelect>
 		</div>
 
-	<div className="my-3 col-6">
+	<div>
 	<CFormLabel>Marque</CFormLabel>
 	<CFormSelect id="marque" onClick={(event) => handleMarqueChange(event)}>
 		{marques &&
@@ -140,7 +140,7 @@ const handleMarqueChange = (event) => {
 	</div>
 
 
-      <CButton type="button" onClick={handleAjout} className="my-3">
+      <CButton type="button" onClick={handleAjout} className="my-3" style={{ backgroundColor:"#DAAB3A",border:"none" }}>
         Ajouter
       </CButton>
     </CForm>

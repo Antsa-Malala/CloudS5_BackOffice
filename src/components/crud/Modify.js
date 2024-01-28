@@ -4,6 +4,7 @@ import {
   CForm,
   CFormLabel,
   CFormInput,
+  CAlert
 } from '@coreui/react'
 
 
@@ -12,6 +13,7 @@ const Modify = ( props ) => {
   const[ value, setValue ] = useState("");
   const[ id, setId ] = useState(0);
   const toaster = useRef();
+  const[ erreur, setErreur] = useState("");
   const [toast, setToast] = useState( null );
   const handleChange = ( event ) => {
     setValue( event.target.value );
@@ -36,6 +38,10 @@ const Modify = ( props ) => {
           console.log(data);
           window.location.href="#"+endpoint;
         }
+        else {
+          console.error("Error during insertion");
+          setErreur("Erreur lors de la modification");
+        }
       }
     };
 
@@ -44,6 +50,16 @@ const Modify = ( props ) => {
     xhttp.setRequestHeader('Authorization', `Bearer ${token}`);
     xhttp.send( JSON.stringify(data) );
   };
+
+  useEffect(() => {
+    if (erreur) {
+      const timeoutId = setTimeout(() => {
+        setErreur("");
+      }, 3000);
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [erreur]);
 
   const getItems = ( id_value, endpoint, nomColonne ) => {
     let xhttp = new XMLHttpRequest();
@@ -71,11 +87,16 @@ const Modify = ( props ) => {
   }, [] );
 
   return (
-    <CForm>
-      <div className="my-3 col-6" >
+    <CForm style={{ boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.08)",marginTop:"30px",padding:"20px",marginLeft:"30%",marginRight:"auto",borderRadius:"10px",width:"35%",backgroundColor:"white"}}>
+      <div>
+      {erreur && (
+            <CAlert color="danger">
+              {erreur}
+            </CAlert>
+          )}
         <CFormLabel htmlFor="nom"> { props.title }  </CFormLabel>
         <CFormInput type="text" onChange={handleChange} value={ value } id="nom" placeholder="...." />
-        <CButton type="button" onClick={ () => handleUpdate( props.endpoint ) } className="my-3"> Modifier </CButton>
+        <CButton type="button" onClick={ () => handleUpdate( props.endpoint ) } className="my-3" style={{ backgroundColor:"#DAAB3A",border:"none" }}> Modifier </CButton>
         { toast }
       </div>
     </CForm>

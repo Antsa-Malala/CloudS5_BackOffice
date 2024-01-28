@@ -20,6 +20,7 @@ import {
   cilDoor,
   cilUser,
   cilList,
+  cilMoney,
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
@@ -57,6 +58,14 @@ const _nav = [
     icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
     
   },
+  {
+    component: CNavItem,
+    name: 'Commissions',
+    to: '/commissions',
+    icon: <CIcon icon={cilMoney} customClassName="nav-icon" />,
+    
+  },
+
 
   {
     component: CNavTitle,
@@ -221,7 +230,8 @@ const _nav = [
         to: '/places/ajouter'
       },
     ]
-  }
+  },
+
 ]
 
 export default _nav

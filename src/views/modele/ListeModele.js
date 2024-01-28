@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { CTable } from '@coreui/react';
 import { Link } from 'react-router-dom'
-import { CSpinner } from '@coreui/react';
+import { CSpinner,CAlert } from '@coreui/react';
 import {
 	CButton,
   } from '@coreui/react'
@@ -9,6 +9,7 @@ import {
 const ListeModele = (props) => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const[ erreur, setErreur] = useState("");
   const token = localStorage.getItem('token');
 
   const loadModels = () => {
@@ -37,7 +38,11 @@ const ListeModele = (props) => {
       if( this.readyState === 4 ){
         if( this.status === 200 ){
 			loadModels();
-          }
+          }else{
+            const errorResponse = JSON.parse(this.responseText);
+            console.error(`Erreur lors de la suppression : ${errorResponse.erreur}`);
+            setErreur("Suppression impossible. Elément encore référencé ailleurs.");
+        }
       }
     };
     xhttp.open( "DELETE" , url , true );
@@ -49,13 +54,29 @@ const ListeModele = (props) => {
     loadModels();
   }, []);
 
+  useEffect(() => {
+    if (erreur) {
+      const timeoutId = setTimeout(() => {
+        setErreur("");
+      }, 3000);
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [erreur]);
+
   return (
     <div>
       {loading ? (
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100px' }}>
-          <CSpinner color="info" />
+          <CSpinner color="danger" />
         </div>
       ) : (
+        <div>
+        {erreur && (
+          <CAlert color="danger">
+            {erreur}
+          </CAlert>
+        )}
       <CTable responsive="sm">
         <thead>
           <tr>
@@ -75,12 +96,13 @@ const ListeModele = (props) => {
                 <td>{item.nomModele}</td>
                 <td>{item.marque.nomMarque}</td>
                 <td>{item.categorie.nomCategorie}</td>
-                <td><Link to={ `modifier/${item.idModele}` } > Modifier </Link></td>
-				<td><CButton type="button" onClick={ () => deleteModeles( item.idModele ) }> Supprimer </CButton></td>
+                <td><Link to={ `modifier/${item.idModele}` } style={{ color:"#B0C0D4" }} > Modifier </Link></td>
+				<td><CButton type="button" onClick={ () => deleteModeles( item.idModele ) } style={{ color:"white",textDecoration:"none",backgroundColor:"#E7414D",border:"none" }}> Supprimer </CButton></td>
               </tr>
             ))}
         </tbody>
       </CTable>
+      </div>
       )}
     </div>
   );

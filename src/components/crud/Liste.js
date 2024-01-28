@@ -1,9 +1,6 @@
 import { React, useEffect, useState } from 'react'
-import {
-  CButton,
-  CTable,
-} from '@coreui/react'
-import { CSpinner } from '@coreui/react';
+import { CButton, CTable, CSpinner, CAlert } from '@coreui/react';
+
 
 import { Link } from 'react-router-dom'
 
@@ -12,6 +9,7 @@ const Liste = (props) => {
   let[ id, setId ] = useState("");
   const [loading, setLoading] = useState(true);
   const[ items, setItems ] = useState([]);
+  const[ erreur, setErreur] = useState("");
   const token = localStorage.getItem('token');
 
   const fetchItems = ( endpoint ) => {
@@ -42,10 +40,10 @@ const Liste = (props) => {
 
   const formatData = ( item, endpoint ) => {
     item['modify'] = (
-      <Link to={ `modifier/${item[id]}/${nom}/${id}` } > Modifier </Link>
+      <Link to={ `modifier/${item[id]}/${nom}/${id}` }  style={{ color:"#B0C0D4" }}> Modifier </Link>
     );
     item['delete'] = (
-      <CButton type="button" onClick={ () => deleteProducts( item[id], endpoint ) }> Supprimer </CButton>
+      <CButton type="button" onClick={ () => deleteProducts( item[id], endpoint ) } style={{ color:"white",textDecoration:"none",backgroundColor:"#E7414D",border:"none" }}> Supprimer </CButton>
     );
     // console.log(item);
     return item;
@@ -61,6 +59,7 @@ const Liste = (props) => {
         }else{
             const errorResponse = JSON.parse(this.responseText);
             console.error(`Erreur lors de la suppression : ${errorResponse.erreur}`);
+            setErreur("Suppression impossible. Elément encore référencé ailleurs.");
         }
         
       }
@@ -77,21 +76,37 @@ const Liste = (props) => {
     console.log(id);
     fetchItems( props.endpoint );
     console.log(nom);
-    //console.log('vita ve');
-    // console.log(items);
   }, [] );
+
+  useEffect(() => {
+    if (erreur) {
+      const timeoutId = setTimeout(() => {
+        setErreur("");
+      }, 3000);
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [erreur]);
   
-  return(
+  return (
     <div>
       {loading ? (
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100px' }}>
-          <CSpinner color="info" />
+          <CSpinner color="danger" />
         </div>
       ) : (
-    <CTable columns={props.columns} items = {items} />
-    )}
+        <div>
+          {erreur && (
+            <CAlert color="danger">
+              {erreur}
+            </CAlert>
+          )}
+          <CTable columns={props.columns} items={items} />
+        </div>
+      )}
     </div>
   );
+  
 };
 
 export default Liste;

@@ -125,7 +125,7 @@ const handleMarqueChange = (event) => {
   }, [id]);
 
   return (
-    <CForm>
+    <CForm style={{ boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.08)",marginTop:"30px",padding:"20px",marginLeft:"30%",marginRight:"auto",borderRadius:"10px",width:"35%",backgroundColor:"white"}}>
       <div className="my-3 col-6">
         <CFormLabel>Nom du modèle</CFormLabel>
         <CFormInput type="text" value={modeles} id="nom" onChange={(event) => handleModeleChange(event)}/>
@@ -156,7 +156,7 @@ const handleMarqueChange = (event) => {
 	</div>
 
 
-      <CButton type="button" onClick={handleUpdate} className="my-3">
+      <CButton type="button" onClick={handleUpdate} className="my-3" style={{ backgroundColor:"#DAAB3A",border:"none" }}>
         Modifier
       </CButton>
     </CForm>

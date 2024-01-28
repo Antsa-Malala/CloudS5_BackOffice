@@ -100,6 +100,7 @@ const DetailsAnnonce = (props) => {
         setItems(data.data);
         let datas = data.data;
         let voiture = datas.voiture;
+        setImages(datas.photo);
         console.log(voiture);
 
         nomCategorie = voiture.categorie.nomCategorie;
@@ -155,7 +156,6 @@ const DetailsAnnonce = (props) => {
         setTelephoneUtilisateur(telephoneUtilisateur);
         setDescription(description);
         setEtat(etat);
-        getImage();
    };
 
     const confirmerAnnonce = async () => {
@@ -176,31 +176,6 @@ const DetailsAnnonce = (props) => {
             console.log(data.data);
             console.log(id);
             window.location.href="#/annonces";
-        } else {
-            console.error('Erreur lors de la requête :', response.status);
-        }
-        } catch (error) {
-        console.error('Erreur inattendue :', error);
-        }
-    };
-  
-
-    const getImage = async () => {
-        try {
-        let url = process.env.REACT_APP_API_URL + "/photo/" + idVoiture;
-        console.log("url"+url)
-        let response = await fetch(url, {
-            method: 'GET',
-            headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
-            },
-        });
-    
-        if (response.ok) {
-            let data = await response.json();
-            setImages(data.data);
-            console.log(images)
         } else {
             console.error('Erreur lors de la requête :', response.status);
         }
@@ -237,24 +212,11 @@ const DetailsAnnonce = (props) => {
     };
 
 
-    function srcset(image, size, rows = 1, cols = 1) {
-        return {
-            src: `${image}?w=${size * cols}&h=${size * rows}&fit=crop&auto=format`,
-            srcSet: `${image}?w=${size * cols}&h=${
-                size * rows
-            }&fit=crop&auto=format&dpr=2 2x`,
-        };
-    }
-
     useEffect(() => {
         fetchAnnonce();
     }, []);
 
     const [enlargedIndex, setEnlargedIndex] = useState(null);
-
-    const handleImageClick = (index) => {
-        setEnlargedIndex(index === enlargedIndex ? null : index);
-    };
 
     return (
         <div>
@@ -264,7 +226,7 @@ const DetailsAnnonce = (props) => {
                     <CCarouselItem key={index}>
                         <CImage
                         className="d-block w-100"
-                        src={`data:${image.contentType};base64,${image.photo}`}
+                        src={image.photo}
                         alt={`slide ${index + 1}`}
                         style={{ maxWidth: '100%', height: 'auto' }}
                         />

@@ -1,20 +1,17 @@
 import React from 'react'
+import CIcon from '@coreui/icons-react'
+import {  cilCloudy } from '@coreui/icons'
 import { CFooter } from '@coreui/react'
 
 const AppFooter = () => {
   return (
-    <CFooter>
+    <CFooter fixed={false}>
       <div>
-        <a href="https://coreui.io" target="_blank" rel="noopener noreferrer">
-          IT University
-        </a>
-        <span className="ms-1">&copy; </span>
+        <span className="ms-1">&copy; IT University</span>
       </div>
-      <div className="ms-auto">
-        <span className="me-1"></span>
-        <a href="" target="_blank" rel="">
-          projet cloud
-        </a>
+      <div className="mfs-auto">
+      <CIcon icon={cilCloudy}/>
+       <span> Cloud Project</span>
       </div>
     </CFooter>
   )

@@ -2,6 +2,10 @@ import React from 'react'
 
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 
+//Commission
+const Commission=React.lazy(() => import('./views/commission/Commission'))
+const AjoutCommission=React.lazy(() => import('./views/commission/AjoutCommission'))
+
 // Categorie
 const Categorie = React.lazy(() => import('./views/categorie/Categorie'))
 const ListeCategorie = React.lazy(() => import('./views/categorie/ListeCategorie'))
@@ -111,6 +115,9 @@ const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 
 const routes = [
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
+
+  { path: '/commissions', name: 'Valeur Commission', element: Commission },
+  { path: '/commissions/ajouter', name: 'Ajout Commission', element: AjoutCommission },
 
   { path: '/categories', name: 'Categorie page', element: ListeCategorie },
   { path: '/categories/ajouter', name: 'Ajout Categorie', element: AjoutCategorie },

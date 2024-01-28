@@ -50,10 +50,10 @@ const ListeA = (props) => {
             item['etat'] = "Vendue";
         }
         item['details'] = (
-            <Link to={ `details/${item[id]}` } > Détails </Link>
+            <Link to={ `details/${item[id]}` } style={{ color:"#DAAB3A",textDecoration:"none" }}> Détails </Link>
         );
         item['delete'] = (
-            <CButton type="button" onClick={ () => deleteProducts( item[id], endpoint ) }> Supprimer </CButton>
+            <CButton type="button" onClick={ () => deleteProducts( item[id], endpoint ) } style={{ color:"#E7414D",textDecoration:"none" }}> Supprimer </CButton>
         );
         // console.log(item);
         return item;
@@ -88,7 +88,7 @@ const ListeA = (props) => {
     <div>
     {loading ? (
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100px' }}>
-            <CSpinner color="info" />
+            <CSpinner color="danger" />
         </div>
     ) : (
         <CTable columns={props.columns} items = {items} />
