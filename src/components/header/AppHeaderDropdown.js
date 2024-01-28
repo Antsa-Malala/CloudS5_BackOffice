@@ -1,27 +1,21 @@
 import React from 'react'
 import {
-  CBadge,
   CDropdown,
-  CDropdownDivider,
   CDropdownItem,
   CDropdownMenu,
   CDropdownToggle,
 } from '@coreui/react'
 import {
   cilAccountLogout,
-  cilEnvelopeOpen,
   cilPowerStandby,
-  cilUser,
 } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
-
-import avatar8 from './../../assets/images/avatars/8.jpg'
 
 const AppHeaderDropdown = () => {
   const handleLogout = () => {
     localStorage.clear();
 
-    window.location.href = '/login';
+    window.location.href = '/';
   };
   return (
     <CDropdown variant="nav-item">

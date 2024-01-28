@@ -145,11 +145,6 @@ import { cilLockLocked, cilUser } from '@coreui/icons'
                             Se connecter
                         </CButton>
                       </CCol>
-                      <CCol xs={6} className="text-right">
-                        <CButton color="link" className="px-0">
-                          Mot de passe oublié ?
-                        </CButton>
-                      </CCol>
                     </CRow>
                   </CForm>
                 </CCardBody>
@@ -157,16 +152,10 @@ import { cilLockLocked, cilUser } from '@coreui/icons'
               <CCard className="text-white py-5" style={{ width: '44%',backgroundColor:"#475465" }}>
                 <CCardBody className="text-center"  style={{backgroundColor:"#475465",border:"none"}}>
                   <div>
-                    <h2>S&apos;inscrire</h2>
+                    <h2>Car&apos;Okaz</h2>
                     <p>
-                      Si vous n&apos;avez pas de compte, vous pouvez vous inscrire ici.
-                      Car&apos;Okaz est un site de vente de voitures d&apos;occasion gratuit.
+                    Bienvenue dans l&apos;espace de gestion en backoffice, où vous avez le pouvoir total de modeler et de perfectionner chaque élément de votre site selon vos besoins.
                     </p>
-                    <Link to="/register">
-                      <CButton className="mt-3" active tabIndex={-1} style={{backgroundColor:"rgba(255,255,255,0.3)",border:"1px solid rgba(255,255,255,0.1)"}}>
-                        S&apos;inscrire maintenant !
-                      </CButton>
-                    </Link>
                   </div>
                 </CCardBody>
               </CCard>
