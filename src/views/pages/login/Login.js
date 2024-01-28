@@ -140,8 +140,8 @@ import { cilLockLocked, cilUser } from '@coreui/icons'
                     </CInputGroup>
                     <CRow>
                       <CCol xs={6}>
-                        <CButton color="primary" className="px-4" type="button"
-                        onClick={connection}>
+                        <CButton className="px-4" type="button"
+                        onClick={connection} style={{backgroundColor:"#475465",color:"white",border:"none"}}>
                             Se connecter
                         </CButton>
                       </CCol>
@@ -154,8 +154,8 @@ import { cilLockLocked, cilUser } from '@coreui/icons'
                   </CForm>
                 </CCardBody>
               </CCard>
-              <CCard className="text-white bg-primary py-5" style={{ width: '44%' }}>
-                <CCardBody className="text-center">
+              <CCard className="text-white py-5" style={{ width: '44%',backgroundColor:"#475465" }}>
+                <CCardBody className="text-center"  style={{backgroundColor:"#475465",border:"none"}}>
                   <div>
                     <h2>S&apos;inscrire</h2>
                     <p>
@@ -163,7 +163,7 @@ import { cilLockLocked, cilUser } from '@coreui/icons'
                       Car&apos;Okaz est un site de vente de voitures d&apos;occasion gratuit.
                     </p>
                     <Link to="/register">
-                      <CButton color="primary" className="mt-3" active tabIndex={-1}>
+                      <CButton className="mt-3" active tabIndex={-1} style={{backgroundColor:"rgba(255,255,255,0.3)",border:"1px solid rgba(255,255,255,0.1)"}}>
                         S&apos;inscrire maintenant !
                       </CButton>
                     </Link>
